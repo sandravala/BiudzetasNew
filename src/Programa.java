@@ -1,37 +1,42 @@
 public class Programa {
 
 	public static void main(String[] args) {
-		
-//		Biudzetas biudzetas = new Biudzetas();
+
+		// daryti mygtuka naujas biudzetas su pavadinimu arba atidaryti biudzeta jau esanti pavadinimu ir nuskaityti faila
+		// reikia atskiro metodo. arba konstruktoriaus?
+		Biudzetas biudzetas = new Biudzetas();
+
+//		biudzetas.pridetiPajamas(1, "DU", null, "bankas");
+//		biudzetas.pridetiPajamas(2, null, "kazkokia tai papildoma info", "bankas");
+//		biudzetas.pridetiPajamas(3, "autorine sutartis", null, "grynieji");
+//		biudzetas.pridetiPajamas(4, "autorine sutartis", null, "bankas");
+//		biudzetas.pridetiPajamas(5, null, "", "grynieji");
+//		biudzetas.pridetiPajamas(5, null, "", "bankas");
 //
-//		biudzetas.pridetiPajamas(1, "DU", false, null);
-//		biudzetas.pridetiPajamas(2, null, false, "kazkokia tai papildoma info");
-//		biudzetas.pridetiPajamas(3, "autorine sutartis", true, null);
-//		biudzetas.pridetiPajamas(4, "autorine sutartis", true, null);
-//		biudzetas.pridetiPajamas(5, null, false, null);
-//		biudzetas.pridetiPajamas(5, null, false, null);
-//		
 //
-//		biudzetas.istrintiPajamuIrasa("P3");
-//		biudzetas.pridetiPajamas(5, null, false, null);
-//		biudzetas.pridetiIslaidas(20, "turgus", "grynieji", null);
-//		
+//
+//		biudzetas.pridetiIslaidas(20, null, "grynieji", "grynieji");
+//
 ////		biudzetas.spausdintiPajamas();
 //		biudzetas.spausdinti();
-//		
+//
 //		biudzetas.spausdinti("islaidas");
-//		
-//		String data = LocalDate.now().toString();
-//		biudzetas.gautiPajamuIrasa(null, "2022-10-05");
-//		
-//		biudzetas.balansas();
-		
+//		biudzetas.spausdinti("pajamas");
+//
+//		//String data = LocalDate.now().toString();
+//		biudzetas.gautiIrasa(null, "2022-10-07");
+//
+		biudzetas.balansas();
+
+		biudzetas.istrintiIrasa("P3");
 		
 // UI		
 		
-		new UserInterface();
-		UserInterface.main(args);
+		//new UserInterface();
+		//UserInterface.main(args);
+//file read write
 
+		//FileReadWrite.readFile("/biudzetas.csv");
 	}
 
 }

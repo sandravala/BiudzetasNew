@@ -1,50 +1,34 @@
-public class IslaiduIrasas extends Biudzetas{
+import java.time.LocalDateTime;
 
-	private double suma;
-	private String kategorija;
-	private String atsiskaitymoBudas; // sitas 
-	private String papildomaInfo;
+public class IslaiduIrasas extends Irasas{
 	private static int numeris;
 	private String irasoNr;
 	
 	public String getIrasoNr() {
 		return irasoNr;
 	}
-	
-	public double getSuma() {
-		return suma;
-	}
-
-	public String getKategorija() {
-		return kategorija;
-	}
-
-	public String getAtsiskaitymoBudas() {
-		return atsiskaitymoBudas;
-	}
-
-	public String getPapildomaInfo() {
-		return papildomaInfo;
-	}
 
 	public static int getNumeris() {
 		return numeris;
 	}
 
-	public IslaiduIrasas(double suma, String kategorija, String atsiskaitymoBudas, String papildomaInfo) {
-		super();
-		this.suma = suma;
-		this.kategorija = kategorija;
-		this.atsiskaitymoBudas = atsiskaitymoBudas;
-		this.papildomaInfo = papildomaInfo;
+	public IslaiduIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
+		super(suma, kategorija, papildomaInfo, gryniejiBankas);
+		super.dataSuLaiku();
 		numeris++;
 		irasoNr = "I"+numeris;
+		super.setIrasoNr(irasoNr);
 	}
 
+	public IslaiduIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
+		super(suma, kategorija, papildomaInfo, gryniejiBankas, irasoNr, dataNuskaityta);
+		numeris++;
+		this.irasoNr = irasoNr;
+	}
 	@Override
 	public String toString() {
-		return "Islaidu irasas Nr " + irasoNr + ", " + dataSuLaiku() + "  [suma=" + suma + ", kategorija=" + kategorija + ", atsiskaitymoBudas=" + atsiskaitymoBudas
-				+ ", papildomaInfo=" + papildomaInfo + "]";
+		return "Islaidu irasas Nr " + irasoNr + ", " + super.dataSuLaiku() + "  [suma=" + super.getSuma() + ", kategorija=" + super.getKategorija() + ", atsiskaitymoBudas=" + super.getGryniejiBankas()
+				+ ", papildomaInfo=" + super.getPapildomaInfo() + "]";
 	}
 	
 	

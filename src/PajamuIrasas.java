@@ -1,56 +1,36 @@
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
-public class PajamuIrasas extends Biudzetas{
-	
-	private double suma;
-	private String kategorija;
-	private boolean arGautaIBankoSask; // sitas
-	private String papildomaInfo;
+public class PajamuIrasas extends Irasas{
+
 	private static int numeris;
 	private String irasoNr;
 	
 	public String getIrasoNr() {
 		return irasoNr;
 	}
-	
-	double getSuma() {
-		return suma;
-	}
-
-	public String getKategorija() {
-		return kategorija;
-	}
-
-	public boolean isArGautaIBankoSask() {
-		return arGautaIBankoSask;
-	}
-
-	public String getPapildomaInfo() {
-		return papildomaInfo;
-	}
 
 	public static int getNumeris() {
 		return numeris;
 	}
 
-	
-	
-	public PajamuIrasas(double suma, String kategorija, boolean arGautaIBankoSask,
-			String papildomaInfo) {
-		super();
-		this.suma = suma;
-		this.kategorija = kategorija;
-		this.arGautaIBankoSask = arGautaIBankoSask;
-		this.papildomaInfo = papildomaInfo;
+	public PajamuIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
+		super(suma, kategorija, papildomaInfo, gryniejiBankas);
 		numeris++;
 		irasoNr = "P"+numeris;
+		super.setIrasoNr(irasoNr);
+	}
+
+	public PajamuIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
+		super(suma, kategorija, papildomaInfo, gryniejiBankas, irasoNr, dataNuskaityta);
+		numeris++;
+		this.irasoNr = irasoNr;
 	}
 		
 	
 	@Override
 	public String toString() {
-		return "Pajamu Irasas Nr " + irasoNr + ", " + dataFormatuota() + " [suma=" + suma + ", kategorija=" + kategorija + ", arGautaIBankoSask=" + arGautaIBankoSask
-				+ ", papildomaInfo=" + papildomaInfo + "]";
+		return "Pajamu Irasas Nr " + irasoNr + ", " + super.dataFormatuota() + " [suma=" + super.getSuma() + ", kategorija=" + super.getKategorija() + ", arGautaIBankoSask=" + super.getGryniejiBankas()
+				+ ", papildomaInfo=" + super.getPapildomaInfo() + "]";
 	}
 	
 	
