@@ -19,7 +19,10 @@ public class UserInterface {
         JFrame frame = new JFrame("BIUDZETAS");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(screenSize.width / 2, screenSize.height);
+        int width = (int) (screenSize.width * 0.5);
+        int height = (int) (screenSize.height * 0.5);
+        frame.setMinimumSize(new Dimension(width, height));
+        frame.setLocationRelativeTo(null);
         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -100,21 +103,41 @@ public class UserInterface {
             }
         });
 
-
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
 
         JPanel panelVeiksmai = new JPanel();
-
         panelVeiksmai.add(lblVeiksmai);
         panelVeiksmai.add(veiksmaiCB);
         panelVeiksmai.add(veiksmuMygtukas);
+        c.gridx = 0;
+        c.gridy = 0;
+        frame.add(panelVeiksmai, c);
 
         JPanel panelFirst = new JPanel();
-        panelFirst.setVisible(true);
+        c.weightx = c.weighty = 1.0;
+        c.gridheight = 2;
+        c.gridx = 0;
+        c.gridy = 1;
+        frame.add(panelFirst, c);
 
         JPanel panelSecond = new JPanel();
-        panelSecond.setVisible(true);
+        c.weightx = c.weighty = 1.0;
+        c.gridheight = 2;
+        c.gridx = 0;
+        c.gridy = 2;
+        frame.add(panelSecond, c);
+
+        JPanel panelSaugoti = new JPanel();
+        c.gridx = 0;
+        c.gridy = 3;
+        frame.add(panelSaugoti, c);
+
 
         JPanel panelAtidaryti = new JPanel();
+        // cia idesiu text field failo pavadinimo irasymui ir mygtuka atidaryti
+
         JPanel panelIvestiPajamuIrasa = new JPanel();
         panelIvestiPajamuIrasa.add(LBLsumaPI);
         panelIvestiPajamuIrasa.add(LBLsumaPI);
@@ -146,18 +169,17 @@ public class UserInterface {
         JPanel panelIvestis = new JPanel();
 
         JPanel panelIsvestis = new JPanel();
-        panelIsvestis.setLayout(new BorderLayout());
-        panelIsvestis.add(BorderLayout.CENTER, new JScrollPane(duomenysSpausdinimui));
+        //panelIsvestis.setLayout(new GridLayout());
+        JScrollPane scrollPane = new JScrollPane(duomenysSpausdinimui);
+        panelIsvestis.add(scrollPane);
 
 
-        JPanel panelSaugoti = new JPanel();
+//        frame.setLayout(new GridLayout(4, 1));
+//        frame.add(panelVeiksmai);
+//        frame.add(panelFirst);
+//        frame.add(panelSecond);
+//        frame.add(panelSaugoti);
 
-        frame.setLayout(new GridLayout(4, 1));
-
-        frame.add(panelVeiksmai);
-        frame.add(panelFirst);
-        frame.add(panelSecond);
-        frame.add(panelSaugoti);
 
 //  , , ,
 
@@ -180,14 +202,21 @@ public class UserInterface {
                         for (String irasas : islaiduIrasai) {
                             model.addElement(irasas);
                         }
+
                         panelFirst.add(panelIsvestis);
-                        panelFirst.setVisible(true);
+                        scrollPane.setVisible(true);
                         panelIsvestis.setVisible(true);
+                        panelFirst.setVisible(true);
+
+                        panelFirst.validate();
                         break;
                     case "Įvesti pajamas":
                         panelFirst.add(panelIvestiPajamuIrasa);
                         panelSecond.add(panelIsvestis);
                         panelIvestiPajamuIrasa.setVisible(true);
+                        panelFirst.setVisible(true);
+                        panelSecond.setVisible(true);
+
                         break;
                     case "Įvesti išlaidas":
                         panelFirst.add(panelIvestiIslaiduIrasa);
