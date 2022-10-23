@@ -40,7 +40,7 @@ public class Biudzetas extends FileReadWrite {
 
 // methods	
 
-/** pridetiPajamuIrasa(double suma, String kategorija, boolean arGautaIBankoSask, String papildomaInfo) */
+/** pridetiPajamuIrasa(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) */
 	
 	public void pridetiPajamas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
 		if (pajamosIslaidos.size() < maxIrasu) {
@@ -55,13 +55,17 @@ public class Biudzetas extends FileReadWrite {
 		}
 	}
 	
-/** pridetiIslaiduIrasa(double suma, String kategorija, String atsiskaitymoBudas, String papildomaInfo) */
+/** pridetiIslaidas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) */
 	
 	public void pridetiIslaidas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
 		if (pajamosIslaidos.size() < maxIrasu) {
 			Irasas naujosIslaidos = new IslaiduIrasas(suma, kategorija, papildomaInfo, gryniejiBankas);
 			pajamosIslaidos.add(naujosIslaidos);
-		System.out.println("Pridetas " + pajamosIslaidos.get(pajamosIslaidos.indexOf(naujosIslaidos)) + "\n-----------------------\n");
+
+			String contentToFile = String.format("%s,%s,%s,%s,%s,%s\n",naujosIslaidos.getSuma(), naujosIslaidos.getKategorija(),naujosIslaidos.getPapildomaInfo(), naujosIslaidos.getGryniejiBankas(), naujosIslaidos.getIrasoNr(), naujosIslaidos.getData());
+			writeFile(fileName, contentToFile);
+
+			System.out.println("Pridetas " + pajamosIslaidos.get(pajamosIslaidos.indexOf(naujosIslaidos)) + "\n-----------------------\n");
 		} else {
 		System.out.println("pajamu irasu kiekis pasieke maksimalu (" + maxIrasu + "). Daugiau irasu netelpa programos atmintyje.\nGalima istrinti visas ivestas pajamas, naudojant metoda [.istrintiPajamas()]\narba istrinti tam tikrus pajamu irasus, nurodant iraso numeri [.istrintiPajamuIrasa(\"Nr\")]\n-----------------------\n");
 		}
@@ -74,7 +78,7 @@ public class Biudzetas extends FileReadWrite {
 		
 		ArrayList<Irasas> atfiltruotiIrasai = new ArrayList<>();
 		
-		//susiparsinti data ir per get day month year pasilygint - neparsinau, nes naudoju metoda datai gauti, kuris grazina stringa
+		//susiparsinti data ir per get day month year pasilygint - neparsinau, nes ir siaip naudoju metoda datai gauti, kuris grazina stringa
 		// getKategorija == kategorija tikrinu del to, kad leidziu ivesti null reiksme. paskui gal istrinsiu, nes per UI null reiksmiu nebus?
 		for (Irasas irasas : pajamosIslaidos) {
 
@@ -131,6 +135,40 @@ public class Biudzetas extends FileReadWrite {
 		}
 	}
 
+	public ArrayList spausdintiUI(String pajamasArIslaidas) {
+		ArrayList<String> irasai = new ArrayList<>();
+		String kaSpausdinti = pajamasArIslaidas;
+		if (kaSpausdinti.equals("pajamas")) {
+			irasai.add("Biudzete siuo metu issaugoti pajamu irasai:\n");
+			for (Irasas irasas : pajamosIslaidos) {
+				if (irasas instanceof PajamuIrasas) {
+					String kurGauta = (irasas.getGryniejiBankas().equals("grynieji")) ? "gauta pavedimu" : "gauta grynais";
+					String kategorija = (irasas.getKategorija() == null) ? "kategorija nenurodyta" : "kategorija: " + irasas.getKategorija();
+					String papildomaInfo = (irasas.getPapildomaInfo() == null) ? "" : ", papildoma info: " + irasas.getPapildomaInfo();
+					String vienasIrasas = String.format("%s Pajamu Irasas Nr %s (suma %.2f EUR, %s, %s%s)\n-----------------------\n", irasas.dataSuLaiku(), irasas.getIrasoNr(), irasas.getSuma(), kategorija, kurGauta, papildomaInfo);
+					irasai.add(vienasIrasas);
+				}
+			}
+			return irasai;
+		} else if (kaSpausdinti.equals("islaidas")) {
+			irasai.add("Biudzete siuo metu issaugoti islaidu irasai:\n");
+			for (Irasas irasas : pajamosIslaidos) {
+				if (irasas instanceof IslaiduIrasas) {
+					String atsiskaitymoBudas = (irasas.getGryniejiBankas() == null) ? "atsiskaitymo budas nenurodytas" : "atsiskaitymo budas: " + irasas.getGryniejiBankas();
+					String kategorija = (irasas.getKategorija() == null) ? "kategorija nenurodyta" : "kategorija: " + irasas.getKategorija();
+					String papildomaInfo = (irasas.getPapildomaInfo() == null) ? "" : ", papildoma info: " + irasas.getPapildomaInfo();
+					String vienasIrasas = String.format("%s Islaidu Irasas Nr %s (suma %.2f EUR, %s, %s%s)\n-----------------------\n", irasas.dataSuLaiku(), ((IslaiduIrasas) irasas).getIrasoNr(), irasas.getSuma(), kategorija, atsiskaitymoBudas, papildomaInfo);
+					irasai.add(vienasIrasas);
+				}
+			}
+			return irasai;
+		} else {
+			irasai.add("klaida! metode reikia nurodyti, ka spausdinti:\n .spausdinti(\"pajamas\")\n .spausdinti(\"islaidas\")\n");
+			return irasai;
+		}
+	}
+
+
 	// tegu grazina i loopa, kad ivestu teisingai
 	// cia kai nenurodo ka spausdinti
 	public void spausdinti() {
@@ -168,9 +206,10 @@ public class Biudzetas extends FileReadWrite {
 			return yraToksIrasas;
 		}
 		
-//	public void istrintiPajamas () {
-//		pajamos.clear();
-//	}
+	public void istrintiVisusIrasus () {
+		pajamosIslaidos.clear();
+		overWriteFile(fileName);
+	}
 
 	public double balansas() {
 		double balansas = 0;
@@ -182,6 +221,29 @@ public class Biudzetas extends FileReadWrite {
 		return balansas;
 	}
 
+	public void redaguotiIrasa (String nr) {
+		if (yraToksIrasas(nr)) {
+			overWriteFile(fileName); // cia perrasau faila tokiu paciu pavadinimu, t.y. padarau kad butu tuscias
+			for (Irasas irasas : pajamosIslaidos) {
+				if (irasas.getIrasoNr().equals(nr)) {
+
+					System.out.println("Istrintas " + pajamosIslaidos.get(pajamosIslaidos.indexOf(irasas)) + "\n-----------------------\n");
+					pajamosIslaidos.remove(pajamosIslaidos.indexOf(irasas));
+					break;
+				}
+			}
+			for (Irasas irasas : pajamosIslaidos) { // surasau i tuscia faila atnaujinta irasu sarasa jau be to istrinto iraso
+				String contentToFile = String.format("%s,%s,%s,%s,%s,%s\n", irasas.getSuma(), irasas.getKategorija(), irasas.getPapildomaInfo(), irasas.getGryniejiBankas(), irasas.getIrasoNr(), irasas.getData());
+				writeFile(fileName, contentToFile);
+			}
+		} else {
+			System.out.println("iraso su tokiu numeriu nera arba numeris ivestas su klaida\n-----------------------\n");
+		}
+	}
 
 
+	public void saugoti() {
+		//cia bus metodas saugoti
+		// reikia pasidaryti irasuose papildoma parametra boolean saved, ir kai uzsaugo irasa, tai ji padaryti true. kad paskui atodarius biudzeta ir saugant naujai ivestus irasus, nesaugotu pakartotinai jau esanciu
+	}
 } // KLASES UZDARYMAS

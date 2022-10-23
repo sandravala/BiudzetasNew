@@ -12,6 +12,8 @@ public class Irasas {
     private String gryniejiBankas;
     private String irasoNr;
 
+// constructors
+
     public Irasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
         this.suma = suma;
         this.kategorija = kategorija;
@@ -30,11 +32,14 @@ public class Irasas {
         data = dataNuskaityta;
     }
 
-    public String getGryniejiBankas() {
-        return gryniejiBankas;
+// getters setters
+
+    public double getSuma() {
+        return suma;
     }
-    public void setGryniejiBankas(String gryniejiBankas) {
-        this.gryniejiBankas = gryniejiBankas;
+
+    public void setSuma(double suma) {
+        this.suma = suma;
     }
 
     public String getKategorija() {
@@ -45,16 +50,24 @@ public class Irasas {
         this.kategorija = kategorija;
     }
 
+
+    public String getGryniejiBankas() {
+        return gryniejiBankas;
+    }
+    public void setGryniejiBankas(String gryniejiBankas) {
+        this.gryniejiBankas = gryniejiBankas;
+    }
+
     public LocalDateTime getData() {
         return data;
     }
 
-    public DateTimeFormatter getFormatas() {
-        return formatas;
-    }
-
-    public DateTimeFormatter getFormatasSuLaiku() {
-        return formatasSuLaiku;
+    /**
+     * @param data formatu "YYYY-MM-DD"
+     * @param laikas formatu "HH:mm"
+     */
+    public void setData(String data, String laikas) {
+        this.data = LocalDateTime.parse(data+"T"+laikas+":00.000000000");
     }
 
     public String getPapildomaInfo() {
@@ -65,12 +78,12 @@ public class Irasas {
         this.papildomaInfo = papildomaInfo;
     }
 
-    public double getSuma() {
-        return suma;
+    public DateTimeFormatter getFormatas() {
+        return formatas;
     }
 
-    public void setSuma(double suma) {
-        this.suma = suma;
+    public DateTimeFormatter getFormatasSuLaiku() {
+        return formatasSuLaiku;
     }
 
     public String getIrasoNr() {
