@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -6,11 +5,15 @@ public class Irasas {
     private LocalDateTime data;
     private DateTimeFormatter formatas = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private DateTimeFormatter formatasSuLaiku = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private DateTimeFormatter laikasBeDatos = DateTimeFormatter.ofPattern("HH:mm");
     private double suma;
     private String kategorija;
     private String papildomaInfo;
     private String gryniejiBankas;
     private String irasoNr;
+
+    private boolean saved;
 
 // constructors
 
@@ -94,11 +97,23 @@ public class Irasas {
         this.irasoNr = irasoNr;
     }
 
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
     public String dataFormatuota() {
         return data.format(formatas);
     }
 
     public String dataSuLaiku() {
         return data.format(formatasSuLaiku);
+    }
+
+    public String laikasBeDatos() {
+        return data.format(laikasBeDatos);
     }
 }

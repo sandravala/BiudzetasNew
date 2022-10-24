@@ -29,8 +29,11 @@ public class PajamuIrasas extends Irasas{
 	
 	@Override
 	public String toString() {
-		return "Pajamu Irasas Nr " + irasoNr + ", " + super.dataFormatuota() + " [suma=" + super.getSuma() + ", kategorija=" + super.getKategorija() + ", arGautaIBankoSask=" + super.getGryniejiBankas()
-				+ ", papildomaInfo=" + super.getPapildomaInfo() + "]";
+		String kurGauta = (getGryniejiBankas().equals("bankas")) ? "gauta pavedimu" : "gauta grynais";
+		String kategorija = (getKategorija() == null) ? "kategorija nenurodyta" : "kategorija: " + getKategorija();
+		String papildomaInfo = (getPapildomaInfo() == null) ? "" : ", papildoma info: " + getPapildomaInfo();
+		String pajamuIrasas = String.format("%s Pajamu Irasas Nr %s (suma %.2f EUR, %s, %s%s)", dataSuLaiku(), getIrasoNr(), getSuma(), kategorija, kurGauta, papildomaInfo);
+		return pajamuIrasas;
 	}
 	
 	

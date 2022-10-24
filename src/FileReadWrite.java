@@ -1,8 +1,6 @@
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileReadWrite {
@@ -15,7 +13,7 @@ public class FileReadWrite {
             if (!theDir.exists())
                 theDir.mkdirs();
 
-            File file = new File(getPath() + fileName);
+            File file = new File(getPath() + "/" + fileName + ".csv");
 
             // if file doesnt exist, then create it
             if (!file.exists())
@@ -37,7 +35,7 @@ public class FileReadWrite {
             if (!theDir.exists())
                 theDir.mkdirs();
 
-            File file = new File(getPath() + fileName);
+            File file = new File(getPath() + "/" + fileName + ".csv");
 
             // if file doesnt exist, then create it
             if (!file.exists())
@@ -57,7 +55,7 @@ public class FileReadWrite {
         String line = null;
         ArrayList<Irasas> nuskaitytiIrasai = new ArrayList<>();
         try {
-            File fin = new File(getPath() + fileName);
+            File fin = new File(getPath() + "/" + fileName + ".csv");
             FileInputStream fis = null;
             fis = new FileInputStream(fin);
 
