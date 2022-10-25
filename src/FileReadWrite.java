@@ -51,7 +51,7 @@ public class FileReadWrite {
         }
     }
 
-    static List<Irasas> readFile(String fileName) {
+    static ArrayList<Irasas> readFile(String fileName) {
         String line = null;
         ArrayList<Irasas> nuskaitytiIrasai = new ArrayList<>();
         try {

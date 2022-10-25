@@ -13,6 +13,8 @@ public class PajamuIrasas extends Irasas{
 		return numeris;
 	}
 
+	public static void resetNumeris() { numeris = 0; }
+
 	public PajamuIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas);
 		numeris++;
@@ -20,9 +22,9 @@ public class PajamuIrasas extends Irasas{
 		super.setIrasoNr(irasoNr);
 	}
 
+	//šitą konstruktorių naudoja metodas atidaryti failą
 	public PajamuIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas, irasoNr, dataNuskaityta);
-		numeris++;
 		this.irasoNr = irasoNr;
 	}
 		
@@ -30,9 +32,10 @@ public class PajamuIrasas extends Irasas{
 	@Override
 	public String toString() {
 		String kurGauta = (getGryniejiBankas().equals("bankas")) ? "gauta pavedimu" : "gauta grynais";
-		String kategorija = (getKategorija() == null) ? "kategorija nenurodyta" : "kategorija: " + getKategorija();
-		String papildomaInfo = (getPapildomaInfo() == null) ? "" : ", papildoma info: " + getPapildomaInfo();
-		String pajamuIrasas = String.format("%s Pajamu Irasas Nr %s (suma %.2f EUR, %s, %s%s)", dataSuLaiku(), getIrasoNr(), getSuma(), kategorija, kurGauta, papildomaInfo);
+		String kategorija = (getKategorija() == "") ? "kategorija nenurodyta" : "kategorija: " + getKategorija();
+		String papildomaInfo = (getPapildomaInfo() == "") ? "" : ", papildoma info: " + getPapildomaInfo();
+		String faileIssaugotas = isSaved() ? ". Faile įrašytas" : ". Faile neįrašytas";
+		String pajamuIrasas = String.format("%s Pajamu Irasas Nr %s (suma %.2f EUR, %s, %s%s)%s", dataSuLaiku(), getIrasoNr(), getSuma(), kategorija, kurGauta, papildomaInfo, faileIssaugotas);
 		return pajamuIrasas;
 	}
 	

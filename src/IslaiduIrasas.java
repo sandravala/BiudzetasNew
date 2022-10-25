@@ -12,6 +12,8 @@ public class IslaiduIrasas extends Irasas{
 		return numeris;
 	}
 
+	public static void resetNumeris() { numeris = 0; }
+
 	public IslaiduIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas);
 		super.dataSuLaiku();
@@ -22,13 +24,16 @@ public class IslaiduIrasas extends Irasas{
 
 	public IslaiduIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas, irasoNr, dataNuskaityta);
-		numeris++;
 		this.irasoNr = irasoNr;
 	}
 	@Override
 	public String toString() {
-		return "Islaidu irasas Nr " + irasoNr + ", " + super.dataSuLaiku() + "  [suma=" + super.getSuma() + ", kategorija=" + super.getKategorija() + ", atsiskaitymoBudas=" + super.getGryniejiBankas()
-				+ ", papildomaInfo=" + super.getPapildomaInfo() + "]";
+		String kurGauta = (getGryniejiBankas().equals("bankas")) ? "mokėta pavedimu" : "mokėta grynais";
+		String kategorija = (getKategorija() == "") ? "kategorija nenurodyta" : "kategorija: " + getKategorija();
+		String papildomaInfo = (getPapildomaInfo() == "") ? "" : ", papildoma info: " + getPapildomaInfo();
+		String faileIssaugotas = isSaved() ? ". Faile įrašytas" : ". Faile neįrašytas";
+		String islaiduIrasas = String.format("%s Pajamu Irasas Nr %s (suma %.2f EUR, %s, %s%s)%s", dataSuLaiku(), getIrasoNr(), getSuma(), kategorija, kurGauta, papildomaInfo, faileIssaugotas);
+		return islaiduIrasas;
 	}
 	
 	

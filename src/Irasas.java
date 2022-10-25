@@ -33,6 +33,7 @@ public class Irasas {
         this.gryniejiBankas = gryniejiBankas;
         this.irasoNr = irasoNr;
         data = dataNuskaityta;
+        setSaved(true);
     }
 
 // getters setters
