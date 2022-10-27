@@ -7,12 +7,9 @@ public class IslaiduIrasas extends Irasas{
 	public String getIrasoNr() {
 		return irasoNr;
 	}
-
-	public static int getNumeris() {
-		return numeris;
+	public void resetNumeris() {
+		numeris = 0;
 	}
-
-	public static void resetNumeris() { numeris = 0; }
 
 	public IslaiduIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas);
@@ -22,9 +19,17 @@ public class IslaiduIrasas extends Irasas{
 		super.setIrasoNr(irasoNr);
 	}
 
+	public IslaiduIrasas(String s) {
+		super(s);
+		if (s.equals("nulis")) {
+			this.numeris = -1;
+		}
+	}
+
 	public IslaiduIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas, irasoNr, dataNuskaityta);
 		this.irasoNr = irasoNr;
+		numeris++;
 	}
 	@Override
 	public String toString() {

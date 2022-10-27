@@ -9,12 +9,6 @@ public class PajamuIrasas extends Irasas{
 		return irasoNr;
 	}
 
-	public static int getNumeris() {
-		return numeris;
-	}
-
-	public static void resetNumeris() { numeris = 0; }
-
 	public PajamuIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas);
 		numeris++;
@@ -26,8 +20,15 @@ public class PajamuIrasas extends Irasas{
 	public PajamuIrasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
 		super(suma, kategorija, papildomaInfo, gryniejiBankas, irasoNr, dataNuskaityta);
 		this.irasoNr = irasoNr;
+		numeris++;
 	}
-		
+
+	public PajamuIrasas(String s) {
+		super(s);
+		if (s.equals("nulis")) {
+			this.numeris = -1;
+		}
+	}
 	
 	@Override
 	public String toString() {

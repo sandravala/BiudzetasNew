@@ -10,6 +10,7 @@ public class Biudzetas extends FileReadWrite {
 
 	// constructor
 	public Biudzetas() {
+
 		fileName = "biudzetas";
 	}
 
@@ -145,20 +146,29 @@ public class Biudzetas extends FileReadWrite {
 
 	public String saugoti(String name, boolean overWrite) {
 
-		setFileName(name);
+			setFileName(name);
 
-		for (Irasas irasas : pajamosIslaidos) {
-			String contentToFile = String.format("%s,%s,%s,%s,%s,%s\n", irasas.getSuma(), irasas.getKategorija(), irasas.getPapildomaInfo(), irasas.getGryniejiBankas(), irasas.getIrasoNr(), irasas.getData());
-			if (overWrite) {
-				overWriteFile(fileName);
-				writeFile(fileName, contentToFile);
-				} else if (!irasas.isSaved()) {
-				writeFile(fileName, contentToFile);
+			if (pajamosIslaidos.size() > 0) {
+
+				for (Irasas irasas : pajamosIslaidos) {
+					String contentToFile = String.format("%s,%s,%s,%s,%s,%s\n", irasas.getSuma(), irasas.getKategorija(), irasas.getPapildomaInfo(), irasas.getGryniejiBankas(), irasas.getIrasoNr(), irasas.getData());
+					if (overWrite) {
+						overWriteFile(fileName);
+						writeFile(fileName, contentToFile);
+						setFailuSarasas(fileName);
+					} else if (!irasas.isSaved()) {
+						writeFile(fileName, contentToFile);
+						irasas.setSaved(true);
+						setFailuSarasas(fileName);
+					}
+				}
+			} else {
+				writeFile(fileName, "");
+				setFailuSarasas(fileName);
 			}
-			irasas.setSaved(true);
-		}
-		String rezultatas = "Visi įvesti biudžeto duomenys išsaugoti csv formatu čia: " + getPath() + "\\" + fileName + ".csv";
-		return rezultatas;
+
+			String rezultatas = getPath() + "\\" + fileName + ".csv";
+			return rezultatas;
 	}
 
 	public String atidarytiFaila(String name) {
@@ -166,16 +176,19 @@ public class Biudzetas extends FileReadWrite {
 		String rezultatas;
 		if (new File(getPath() + "/" + fileName + ".csv").exists()) {
 			pajamosIslaidos.clear();
+			new PajamuIrasas("nulis");
+			new IslaiduIrasas("nulis");
 			pajamosIslaidos = readFile(fileName);
 			if(readFile(fileName).size() < 1) {
-				rezultatas = "Failas " + fileName + ".csv yra tuščias";
+				rezultatas = "Failas " + fileName + ".csv atidarytas, bet yra tuščias";
 			} else {
 				rezultatas = "Nuskaityti duomenys iš failo: " + fileName + ".csv. Nuskaitytų įrašų kiekis: " + pajamosIslaidos.size() + " vnt. Galite toliau dirbti su duomenimis";
 			}
 		} else {
-			rezultatas = "Failo " + fileName + ".csv nėra. Bandykite dar kartą arba saugokite įvestus duomenis į failą (Saugoti)";
+			rezultatas = "UPS! failo " + fileName + ".csv nėra. Kažkas tikriausiai jį ištrynė. Pasirinkite kitą failą arba kurkite naują";
 		}
 		return rezultatas;
 	}
+
 
 } // KLASES UZDARYMAS

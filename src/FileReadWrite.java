@@ -1,17 +1,60 @@
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FileReadWrite {
 
-    // fileName reikia imti pagal pavadinima biudzeto, o biudzeto konstruktoriuj daryti varda final.
+    private static ArrayList<String> failuSarasas = new ArrayList<>();
+
+    public static void uzkrautiFailuSarasa() {
+
+        if (!new File(getPath() + "/d/dokSarasas" + ".csv").exists()) {
+            return;
+        }
+        failuSarasas.clear();
+        failuSarasas.addAll(readDok("/d/dokSarasas"));
+
+    }
+
+    public static ArrayList<String> getFailuSarasas() {
+
+        uzkrautiFailuSarasa();
+        ArrayList<String> naujasFailuSarasas = new ArrayList<>();
+        Iterator<String> iter = failuSarasas.iterator();
+
+        while (iter.hasNext()) {
+            String n = iter.next();
+            if (new File(getPath() + "/" + n + ".csv").exists()) {
+                naujasFailuSarasas.add(n);
+            }
+        }
+
+        failuSarasas.clear();
+        failuSarasas.addAll(new HashSet<>(naujasFailuSarasas));
+
+        return failuSarasas;
+    }
+
+    public static void setFailuSarasas(String failoPavadinimas) {
+
+            if (failuSarasas.contains(failoPavadinimas)) {
+                return;
+            }
+
+        failuSarasas.add(failoPavadinimas);
+        overWriteFile("/d/dokSarasas");
+
+        Iterator<String> iter = failuSarasas.iterator();
+        while (iter.hasNext()) {
+            writeFile("/d/dokSarasas", String.format("%s,", iter.next()));
+        }
+    }
 
     static void writeFile(String fileName, String content) {
         try {
-            File theDir = new File(getPath());
-            if (!theDir.exists())
-                theDir.mkdirs();
+//            File theDir = new File(getPath());
+//            if (!theDir.exists())
+//                theDir.mkdirs();
 
             File file = new File(getPath() + "/" + fileName + ".csv");
 
@@ -31,9 +74,6 @@ public class FileReadWrite {
 
     static void overWriteFile(String fileName) {
         try {
-            File theDir = new File(getPath());
-            if (!theDir.exists())
-                theDir.mkdirs();
 
             File file = new File(getPath() + "/" + fileName + ".csv");
 
@@ -87,6 +127,34 @@ public class FileReadWrite {
         return nuskaitytiIrasai;
     }
 
+    static ArrayList<String> readDok(String fileName) {
+        String line = null;
+        ArrayList<String> nuskaitytiIrasai = new ArrayList<>();
+        try {
+            File fin = new File(getPath() + fileName + ".csv");
+            FileInputStream fis = null;
+            fis = new FileInputStream(fin);
+
+            // Construct BufferedReader from InputStreamReader
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+
+            while ((line = br.readLine()) != null) {
+                if (!line.isBlank()) {
+                    String[] pavadinimai;
+                    pavadinimai = line.split(",");
+                    for (int i = 0; i < pavadinimai.length; i++) {
+                        nuskaitytiIrasai.add(pavadinimai[i]);
+                    }
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return nuskaitytiIrasai;
+    }
+
     static String getPath() {
         String currentPath = null;
         try {
@@ -97,4 +165,5 @@ public class FileReadWrite {
         //System.out.println("Current dir:" + currentPath);
         return currentPath;
     }
+
 }

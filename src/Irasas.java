@@ -5,18 +5,17 @@ public class Irasas {
     private LocalDateTime data;
     private DateTimeFormatter formatas = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private DateTimeFormatter formatasSuLaiku = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     private DateTimeFormatter laikasBeDatos = DateTimeFormatter.ofPattern("HH:mm");
     private double suma;
     private String kategorija;
     private String papildomaInfo;
     private String gryniejiBankas;
     private String irasoNr;
-
     private boolean saved;
 
 // constructors
 
+    //pridedant naują įrašą
     public Irasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas) {
         this.suma = suma;
         this.kategorija = kategorija;
@@ -26,6 +25,7 @@ public class Irasas {
 
     }
 
+    //nuskaitant iš failo
     public Irasas(double suma, String kategorija, String papildomaInfo, String gryniejiBankas, String irasoNr, LocalDateTime dataNuskaityta) {
         this.suma = suma;
         this.kategorija = kategorija;
@@ -34,6 +34,9 @@ public class Irasas {
         this.irasoNr = irasoNr;
         data = dataNuskaityta;
         setSaved(true);
+    }
+
+    public Irasas (String s) {
     }
 
 // getters setters
@@ -54,7 +57,6 @@ public class Irasas {
         this.kategorija = kategorija;
     }
 
-
     public String getGryniejiBankas() {
         return gryniejiBankas;
     }
@@ -66,10 +68,6 @@ public class Irasas {
         return data;
     }
 
-    /**
-     * @param data formatu "YYYY-MM-DD"
-     * @param laikas formatu "HH:mm"
-     */
     public void setData(String data, String laikas) {
         this.data = LocalDateTime.parse(data+"T"+laikas+":00.000000000");
     }
@@ -80,14 +78,6 @@ public class Irasas {
 
     public void setPapildomaInfo(String papildomaInfo) {
         this.papildomaInfo = papildomaInfo;
-    }
-
-    public DateTimeFormatter getFormatas() {
-        return formatas;
-    }
-
-    public DateTimeFormatter getFormatasSuLaiku() {
-        return formatasSuLaiku;
     }
 
     public String getIrasoNr() {
@@ -117,4 +107,5 @@ public class Irasas {
     public String laikasBeDatos() {
         return data.format(laikasBeDatos);
     }
+
 }
